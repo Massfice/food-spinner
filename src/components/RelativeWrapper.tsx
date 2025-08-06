@@ -11,7 +11,7 @@ export const RelativeWrapper: React.FC<
     return (
         <div
             className={cn(
-                'relative overflow-hidden mb-4',
+                'relative overflow-hidden',
                 className,
             )}
             {...props}
