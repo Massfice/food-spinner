@@ -26,7 +26,8 @@ export const Default: StoryObj<typeof meta> = {
         await step(
             'Renders with correct values',
             async () => {
-                const div = screen.getByRole('wrapper');
+                const div =
+                    screen.getByRole('image-wrapper');
 
                 const { width, height } =
                     window.getComputedStyle(div);

@@ -29,11 +29,16 @@ type CircularImageProps = {
      * Classes to apply to the circular image.
      */
     className?: string;
+
+    /**
+     * Styles to apply to the circular image.
+     */
+    style?: React.CSSProperties;
 };
 
 export const CircularImage: React.FC<
     CircularImageProps
-> = ({ radius, radiusUnits, image }) => {
+> = ({ radius, radiusUnits, image, style, className }) => {
     const width = useMemo(() => {
         return `${radius * 2}${radiusUnits}`;
     }, [radius, radiusUnits]);
@@ -43,8 +48,10 @@ export const CircularImage: React.FC<
             style={{
                 width,
                 height: width,
+                ...style,
             }}
-            role="wrapper"
+            role="image-wrapper"
+            className={className}
         >
             <img
                 src={image}
