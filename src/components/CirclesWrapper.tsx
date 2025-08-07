@@ -1,6 +1,13 @@
 import React from 'react';
 import { CircularImage } from './CircularImage';
 import cn from 'classnames';
+import type { Units } from '../types';
+import { positionCircle } from '../utils/position';
+
+export type CirclePosition = {
+    x: number;
+    y: number;
+};
 
 type Circle = {
     /**
@@ -16,10 +23,7 @@ type Circle = {
     /**
      * The position of the circle.
      */
-    position: {
-        x: number;
-        y: number;
-    };
+    position: CirclePosition;
 
     /**
      * The radius of the circle.
@@ -29,15 +33,14 @@ type Circle = {
     /**
      * The units of the circle.
      */
-    units:
-        | 'px'
-        | 'rem'
-        | 'em'
-        | 'vw'
-        | 'vh'
-        | 'vmin'
-        | 'vmax'
-        | '%';
+    units: Units;
+};
+
+type CirclesWrapperBorder = {
+    x: number;
+    y: number;
+    radius: number;
+    units: Units;
 };
 
 type CirclesWrapperProps = {
@@ -45,15 +48,21 @@ type CirclesWrapperProps = {
      * The circles to display in the wrapper.
      */
     circles: Circle[];
+
     /**
      * The class name of the wrapper.
      */
     className?: string;
+
+    /**
+     * The border of the wrapper.
+     */
+    border?: CirclesWrapperBorder;
 };
 
 export const CirclesWrapper: React.FC<
     CirclesWrapperProps
-> = ({ circles, className }) => {
+> = ({ circles, className, border }) => {
     return (
         <div
             className={cn(
@@ -66,8 +75,14 @@ export const CirclesWrapper: React.FC<
                 <CircularImage
                     className="absolute"
                     style={{
-                        bottom: `${circle.position.y}${circle.units}`,
-                        left: `${circle.position.x}${circle.units}`,
+                        ...positionCircle(
+                            {
+                                x: circle.position.x,
+                                y: circle.position.y,
+                            },
+                            circle.radius,
+                            circle.units,
+                        ),
                     }}
                     key={circle.id}
                     image={circle.image}
@@ -75,6 +90,28 @@ export const CirclesWrapper: React.FC<
                     radiusUnits={circle.units}
                 />
             ))}
+
+            {border && (
+                <div
+                    className="absolute border-2 border-dashed border-red-200 rounded-full"
+                    style={{
+                        width: `${border.radius * 2}${
+                            border.units
+                        }`,
+                        height: `${border.radius * 2}${
+                            border.units
+                        }`,
+                        ...positionCircle(
+                            {
+                                x: border.x,
+                                y: border.y,
+                            },
+                            border.radius,
+                            border.units,
+                        ),
+                    }}
+                />
+            )}
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Circle } from './Circle';
+import type { Units } from '../types';
 
 type CircularImageProps = {
     /**
@@ -10,15 +11,7 @@ type CircularImageProps = {
     /**
      * The units of the radius.
      */
-    radiusUnits:
-        | 'px'
-        | 'rem'
-        | 'em'
-        | 'vw'
-        | 'vh'
-        | 'vmin'
-        | 'vmax'
-        | '%';
+    radiusUnits: Units;
 
     /**
      * The image to display in the circular image.

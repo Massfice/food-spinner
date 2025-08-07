@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CirclesWrapper } from '../components/CirclesWrapper';
 import { within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { convertPercents } from '../utils/test/convertPercents';
+import { convertPercents } from '../../test/utils/convertPercents';
 
 const meta: Meta<typeof CirclesWrapper> = {
     title: 'Components/CirclesWrapper',
@@ -20,10 +20,10 @@ export const Default: StoryObj<typeof meta> = {
                 id: '1',
                 image: 'https://placehold.co/200x200',
                 position: {
-                    x: 0,
-                    y: 0,
+                    x: 50,
+                    y: 50,
                 },
-                radius: 50,
+                radius: 40,
                 units: '%',
             },
             {
@@ -41,7 +41,7 @@ export const Default: StoryObj<typeof meta> = {
                 image: 'https://placehold.co/200x200',
                 position: {
                     x: 700,
-                    y: 0,
+                    y: 100,
                 },
                 radius: 50,
                 units: 'px',
@@ -80,18 +80,42 @@ export const Default: StoryObj<typeof meta> = {
                 } = window.getComputedStyle(thirdCircle);
 
                 expect(firstCircleBottom).toBe(
-                    convertPercents('0%', 800),
+                    convertPercents('10%', 800),
                 );
                 expect(firstCircleLeft).toBe(
-                    convertPercents('0%', 800),
+                    convertPercents('10%', 800),
                 );
 
-                expect(secondCircleBottom).toBe('700px');
-                expect(secondCircleLeft).toBe('700px');
+                expect(secondCircleBottom).toBe('650px');
+                expect(secondCircleLeft).toBe('650px');
 
-                expect(thirdCircleBottom).toBe('0px');
-                expect(thirdCircleLeft).toBe('700px');
+                expect(thirdCircleBottom).toBe('50px');
+                expect(thirdCircleLeft).toBe('650px');
             },
         );
+    },
+};
+
+export const WithBorder: StoryObj<typeof meta> = {
+    args: {
+        className: 'w-200 h-200',
+        circles: [
+            {
+                id: '1',
+                image: 'https://placehold.co/200x200',
+                position: {
+                    x: 50,
+                    y: 50,
+                },
+                radius: 10,
+                units: '%',
+            },
+        ],
+        border: {
+            x: 50,
+            y: 50,
+            radius: 30,
+            units: '%',
+        },
     },
 };
