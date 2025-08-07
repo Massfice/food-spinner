@@ -1,5 +1,5 @@
 import type { Units } from '../types';
-import type { CirclePosition } from '../components/CirclesWrapper';
+import type { Position } from '../types';
 
 type CorrectedPosition = {
     bottom: string;
@@ -11,13 +11,13 @@ type CorrectedPosition = {
  * When we are positioning the circle, coordinates refers to the corner of the circle.
  * But we want to position the circle from the center.
  *
- * @param {PositionCircle} position - The position of the circle.
+ * @param {Position} position - The position of the circle.
  * @param {number} radius - The radius of the circle.
  * @param {Units} units - The units of the circle.
  * @returns {CorrectedPosition} The corrected position of the circle.
  */
 export const positionCircle = (
-    position: CirclePosition,
+    position: Position,
     radius: number,
     units: Units,
 ): CorrectedPosition => {

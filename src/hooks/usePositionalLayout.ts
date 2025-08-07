@@ -1,58 +1,9 @@
 import { useMemo } from 'react';
-import type { Units } from '../types';
-
-type PositionalLayoutItem<
-    T extends Record<string, unknown>,
-> = T & {
-    position: {
-        x: number;
-        y: number;
-    };
-    radius: number;
-    units: Units;
-};
-
-type PositionalLayoutProps<
-    T extends Record<string, unknown>,
-> = {
-    /**
-     * The list of items to layout.
-     */
-    items: T[];
-
-    /**
-     * The center of the circle.
-     */
-    center: {
-        x: number;
-        y: number;
-    };
-
-    /**
-     * The radius of the circle.
-     */
-    radius: number;
-
-    /**
-     * The ratio of the radius to the number of items.
-     */
-    ratio: number;
-
-    /**
-     * The even distribution threshold.
-     */
-    evenDistributionThreshold: number;
-};
-
-type PositionalLayoutReturn<
-    T extends Record<string, unknown>,
-> = {
-    items: PositionalLayoutItem<T>[];
-    winningPosition: {
-        x: number;
-        y: number;
-    } | null;
-};
+import type {
+    PositionalLayoutItem,
+    PositionalLayoutProps,
+    PositionalLayoutReturn,
+} from '../types';
 
 type CalculatePositionProps = {
     index: number;

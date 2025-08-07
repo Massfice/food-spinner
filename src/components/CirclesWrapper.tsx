@@ -1,40 +1,8 @@
 import React from 'react';
 import { CircularImage } from './CircularImage';
 import cn from 'classnames';
-import type { Units } from '../types';
+import type { Units, Circle } from '../types';
 import { positionCircle } from '../utils/position';
-
-export type CirclePosition = {
-    x: number;
-    y: number;
-};
-
-type Circle = {
-    /**
-     * The id of the circle.
-     */
-    id: string;
-
-    /**
-     * The image to display in the circle.
-     */
-    image: string;
-
-    /**
-     * The position of the circle.
-     */
-    position: CirclePosition;
-
-    /**
-     * The radius of the circle.
-     */
-    radius: number;
-
-    /**
-     * The units of the circle.
-     */
-    units: Units;
-};
 
 type CirclesWrapperBorder = {
     x: number;
