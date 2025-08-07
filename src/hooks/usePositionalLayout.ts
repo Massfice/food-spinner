@@ -78,7 +78,7 @@ const calculatePositionAndRadius = (
         ratio,
     } = props;
 
-    const startAngleRadians = 3.925;
+    const startAngleRadians = Math.PI / 2;
 
     const angleIncrementRadians =
         (2 * Math.PI) / (evenDistributionThreshold + 1);
@@ -94,7 +94,7 @@ const calculatePositionAndRadius = (
 
     return {
         position: { x, y },
-        radius: radius * ratio,
+        radius: radius * ratio > 4 ? 4 : radius * ratio,
     };
 };
 
@@ -113,7 +113,7 @@ export const usePositionalLayout = <
                 items: items.map((item, index) => {
                     const { position, radius: itemRadius } =
                         calculatePositionAndRadius({
-                            index,
+                            index: items.length - index - 1,
                             count: items.length,
                             evenDistributionThreshold,
                             center,
