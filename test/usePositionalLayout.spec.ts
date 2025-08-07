@@ -327,4 +327,22 @@ describe('usePositionalLayout', () => {
 
         expect(winningPosition).toBeNull();
     });
+
+    it('returns correct center, radius and units', () => {
+        const { result } = renderHook(() =>
+            usePositionalLayout({
+                items: [{ id: 1 }],
+                center: { x: 0, y: 0 },
+                radius: 16,
+                ratio: 1.2,
+                evenDistributionThreshold: 3,
+            }),
+        );
+
+        const { center, radius, units } = result.current;
+
+        expect(center).toEqual({ x: 0, y: 0 });
+        expect(radius).toEqual(16);
+        expect(units).toEqual('%');
+    });
 });

@@ -123,5 +123,11 @@ export const usePositionalLayout = <
             }));
         }, [items, positions, radius, ratio]);
 
-    return { items: itemsWithPositions, winningPosition };
+    return {
+        items: itemsWithPositions,
+        winningPosition,
+        center,
+        radius,
+        units: '%',
+    };
 };
