@@ -73,7 +73,7 @@ export const CirclesWrapper: React.FC<
         >
             {circles.map((circle) => (
                 <CircularImage
-                    className="absolute"
+                    className="absolute z-10"
                     style={{
                         ...positionCircle(
                             {
@@ -93,7 +93,7 @@ export const CirclesWrapper: React.FC<
 
             {border && (
                 <div
-                    className="absolute border-2 border-dashed border-red-200 rounded-full"
+                    className="absolute z-0 border-2 border-dashed border-red-200 rounded-full"
                     style={{
                         width: `${border.radius * 2}${
                             border.units
