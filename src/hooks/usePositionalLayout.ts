@@ -130,47 +130,47 @@ export const usePositionalLayout = <
     ratio,
     evenDistributionThreshold,
 }: PositionalLayoutProps<T>): PositionalLayoutReturn<T> => {
-    const result: PositionalLayoutReturn<T> =
+    const positions = useMemo(() => {
+        return Array.from(
+            { length: items.length },
+            (_, index) => {
+                const { position } =
+                    calculatePositionAndRadius({
+                        index: items.length - index - 1,
+                        count: items.length,
+                        evenDistributionThreshold,
+                        center,
+                        radius,
+                        ratio: ratio / items.length,
+                    });
+                return position;
+            },
+        );
+    }, [
+        items.length,
+        center,
+        radius,
+        ratio,
+        evenDistributionThreshold,
+    ]);
+
+    const winningPosition = useMemo(() => {
+        return calculateWinningPosition(positions);
+    }, [positions]);
+
+    const itemsWithPositions: PositionalLayoutItem<T>[] =
         useMemo(() => {
-            const itemsWithPositions: PositionalLayoutItem<T>[] =
-                items.map((item, index) => {
-                    const { position, radius: itemRadius } =
-                        calculatePositionAndRadius({
-                            index: items.length - index - 1,
-                            count: items.length,
-                            evenDistributionThreshold,
-                            center,
-                            radius,
-                            ratio: ratio / items.length,
-                        });
+            return items.map((item, index) => ({
+                ...item,
+                position: positions[index],
+                radius: positions[index]
+                    ? radius * (ratio / items.length) > 4
+                        ? 4
+                        : radius * (ratio / items.length)
+                    : 0,
+                units: '%',
+            }));
+        }, [items, positions, radius, ratio]);
 
-                    return {
-                        ...item,
-                        position,
-                        radius: itemRadius,
-                        units: '%',
-                    };
-                });
-
-            const positions = itemsWithPositions.map(
-                (item) => item.position,
-            );
-
-            const winningPosition = useMemo(() => {
-                return calculateWinningPosition(positions);
-            }, [positions]);
-
-            return {
-                items: itemsWithPositions,
-                winningPosition,
-            };
-        }, [
-            items,
-            center,
-            radius,
-            ratio,
-            evenDistributionThreshold,
-        ]);
-
-    return result;
+    return { items: itemsWithPositions, winningPosition };
 };
