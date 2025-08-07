@@ -98,6 +98,29 @@ const calculatePositionAndRadius = (
     };
 };
 
+export const calculateWinningPosition = (
+    positions: {
+        x: number;
+        y: number;
+    }[],
+) => {
+    if (positions.length === 0) {
+        return null;
+    }
+
+    if (positions.length === 1) {
+        return positions[0];
+    }
+
+    const winningPositionIndex = Math.ceil(
+        positions.length / 2,
+    );
+
+    const winningPosition = positions[winningPositionIndex];
+
+    return winningPosition;
+};
+
 export const usePositionalLayout = <
     T extends Record<string, unknown>,
 >({
@@ -109,8 +132,8 @@ export const usePositionalLayout = <
 }: PositionalLayoutProps<T>): PositionalLayoutReturn<T> => {
     const result: PositionalLayoutReturn<T> =
         useMemo(() => {
-            return {
-                items: items.map((item, index) => {
+            const itemsWithPositions: PositionalLayoutItem<T>[] =
+                items.map((item, index) => {
                     const { position, radius: itemRadius } =
                         calculatePositionAndRadius({
                             index: items.length - index - 1,
@@ -127,8 +150,19 @@ export const usePositionalLayout = <
                         radius: itemRadius,
                         units: '%',
                     };
-                }),
-                winningPosition: null,
+                });
+
+            const positions = itemsWithPositions.map(
+                (item) => item.position,
+            );
+
+            const winningPosition = useMemo(() => {
+                return calculateWinningPosition(positions);
+            }, [positions]);
+
+            return {
+                items: itemsWithPositions,
+                winningPosition,
             };
         }, [
             items,

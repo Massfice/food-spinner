@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 import { usePositionalLayout } from './utils/usePositionalLayout';
+import { calculateWinningPosition } from '../src/hooks/usePositionalLayout';
 
 describe('usePositionalLayout', () => {
     it('calculates position, radius and units', () => {
@@ -197,5 +198,133 @@ describe('usePositionalLayout', () => {
                 units: '%',
             },
         ]);
+    });
+
+    it('returns winning position', () => {
+        const { result } = renderHook(() =>
+            usePositionalLayout({
+                items: [{ id: 1 }],
+                center: { x: 0, y: 0 },
+                radius: 16,
+                ratio: 1.2,
+                evenDistributionThreshold: 3,
+            }),
+        );
+
+        const { winningPosition } = result.current;
+
+        expect(winningPosition).toEqual({
+            x: 9.797174393178826e-16,
+            y: 16,
+        });
+    });
+
+    it('calculates winning positions', () => {
+        const positions: { x: number; y: number }[] = [];
+
+        expect(positions.length).toBe(0);
+        let winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toBeNull();
+
+        positions.push({ x: 0, y: 0 }); // first position -> first item
+        expect(positions.length).toBe(1);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[0]);
+
+        positions.push({ x: 1, y: 1 }); // second position -> second item
+        expect(positions.length).toBe(2);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[1]);
+
+        positions.push({ x: 2, y: 2 }); // third postion -> third item
+        expect(positions.length).toBe(3);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[2]);
+
+        positions.push({ x: 3, y: 3 }); // fourth position -> third item
+        expect(positions.length).toBe(4);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[2]);
+
+        positions.push({ x: 4, y: 4 }); // fifth position -> fourth item
+        expect(positions.length).toBe(5);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[3]);
+
+        positions.push({ x: 5, y: 5 }); // sixth position -> fourth item
+        expect(positions.length).toBe(6);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[3]);
+
+        positions.push({ x: 6, y: 6 }); // seventh position -> fifth item
+        expect(positions.length).toBe(7);
+        winningPosition =
+            calculateWinningPosition(positions);
+        expect(winningPosition).toEqual(positions[4]);
+    });
+
+    it('updates winning position', () => {
+        const { result } = renderHook(() =>
+            usePositionalLayout({
+                items: [{ id: 1 }],
+                center: { x: 0, y: 0 },
+                radius: 16,
+                ratio: 1.2,
+                evenDistributionThreshold: 3,
+            }),
+        );
+
+        const { winningPosition, setItems } =
+            result.current;
+
+        expect(winningPosition).toEqual({
+            x: 9.797174393178826e-16,
+            y: 16,
+        });
+
+        act(() => {
+            setItems([
+                { id: 1 },
+                { id: 2 },
+                { id: 3 },
+                { id: 4 },
+                { id: 5 },
+                { id: 6 },
+                { id: 7 },
+                { id: 8 },
+                { id: 9 },
+            ]);
+        });
+
+        const { winningPosition: updatedWinningPosition } =
+            result.current;
+
+        expect(updatedWinningPosition).toEqual({
+            x: -7.9999999999999964,
+            y: 13.85640646055102,
+        });
+    });
+
+    it('returns winning position as null if no items are provided', () => {
+        const { result } = renderHook(() =>
+            usePositionalLayout({
+                items: [],
+                center: { x: 0, y: 0 },
+                radius: 16,
+                ratio: 1.2,
+                evenDistributionThreshold: 3,
+            }),
+        );
+
+        const { winningPosition } = result.current;
+
+        expect(winningPosition).toBeNull();
     });
 });
