@@ -86,3 +86,11 @@ export type PositionalLayoutReturn<
     radius: number;
     units: Units;
 };
+
+export type CircularMovementReturn<
+    T extends Record<string, unknown>,
+> = {
+    items: PositionalLayoutItem<T>[];
+    winner: PositionalLayoutItem<T> | null;
+    spin: () => void;
+};
