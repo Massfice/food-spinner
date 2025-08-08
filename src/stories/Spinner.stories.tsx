@@ -19,6 +19,7 @@ export const Default: StoryObj<typeof Spinner> = {
         items: [
             {
                 id: '1',
+                index: 0,
                 image: 'https://placehold.co/200x200',
                 position: { x: 200, y: 200 },
                 radius: 75,

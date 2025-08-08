@@ -22,6 +22,7 @@ describe('usePositionalLayout', () => {
         expect(items).toEqual([
             {
                 ...item,
+                index: 0,
                 position: {
                     x: 9.797174393178826e-16,
                     y: 16,
@@ -109,6 +110,7 @@ describe('usePositionalLayout', () => {
         expect(updatedItems).toEqual([
             {
                 ...testItems[0],
+                index: 0,
                 position: {
                     x: 12.944271909999157,
                     y: -9.404564036679574,
@@ -118,6 +120,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[1],
+                index: 1,
                 position: {
                     x: 4.944271909999156,
                     y: -15.216904260722458,
@@ -127,6 +130,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[2],
+                index: 2,
                 position: {
                     x: -4.944271909999161,
                     y: -15.216904260722456,
@@ -136,6 +140,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[3],
+                index: 3,
                 position: {
                     x: -12.94427190999916,
                     y: -9.404564036679568,
@@ -145,6 +150,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[4],
+                index: 4,
                 position: {
                     x: -16,
                     y: 1.959434878635765e-15,
@@ -154,6 +160,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[5],
+                index: 5,
                 position: {
                     x: -12.944271909999157,
                     y: 9.404564036679572,
@@ -163,6 +170,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[6],
+                index: 6,
                 position: {
                     x: -4.944271909999157,
                     y: 15.216904260722458,
@@ -172,6 +180,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[7],
+                index: 7,
                 position: {
                     x: 4.944271909999159,
                     y: 15.216904260722456,
@@ -181,6 +190,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[8],
+                index: 8,
                 position: {
                     x: 12.94427190999916,
                     y: 9.40456403667957,
@@ -190,6 +200,7 @@ describe('usePositionalLayout', () => {
             },
             {
                 ...testItems[9],
+                index: 9,
                 position: {
                     x: 16,
                     y: 0,

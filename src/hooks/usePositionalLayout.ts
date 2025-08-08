@@ -4,6 +4,7 @@ import type {
     PositionalLayoutProps,
     PositionalLayoutReturn,
 } from '../types';
+import { winPosIndex } from '../utils/winPosIndex';
 
 type CalculatePositionProps = {
     index: number;
@@ -55,17 +56,13 @@ export const calculateWinningPosition = (
         y: number;
     }[],
 ) => {
-    if (positions.length === 0) {
+    const winningPositionIndex = winPosIndex(
+        positions.length,
+    );
+
+    if (winningPositionIndex === null) {
         return null;
     }
-
-    if (positions.length === 1) {
-        return positions[0];
-    }
-
-    const winningPositionIndex = Math.ceil(
-        positions.length / 2,
-    );
 
     const winningPosition = positions[winningPositionIndex];
 
@@ -113,6 +110,7 @@ export const usePositionalLayout = <
         useMemo(() => {
             return items.map((item, index) => ({
                 ...item,
+                index,
                 position: positions[index],
                 radius: positions[index]
                     ? radius * (ratio / items.length) > 4

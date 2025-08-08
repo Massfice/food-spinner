@@ -42,6 +42,7 @@ describe('useCircularMovement', () => {
 
         const initialItems: PositionalLayoutItem<{}>[] = [
             {
+                index: 0,
                 position: {
                     x: 100,
                     y: 0,
@@ -50,6 +51,7 @@ describe('useCircularMovement', () => {
                 units: 'px',
             },
             {
+                index: 1,
                 position: {
                     x: 200,
                     y: 0,
@@ -68,7 +70,6 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 200,
                 units: 'px',
-                interface: circularMovement,
                 onWinnerFound,
             }),
         );
@@ -78,7 +79,7 @@ describe('useCircularMovement', () => {
         expect(onWinnerFound).toHaveBeenCalledWith(null);
 
         act(() => {
-            spin();
+            spin(circularMovement);
             circularMovement.setTime(16);
             circularMovement.setTime(32);
         });
@@ -93,6 +94,7 @@ describe('useCircularMovement', () => {
 
         expect(items).toEqual([
             {
+                index: 0,
                 position: {
                     x: -64.3344926310006,
                     y: 189.37020108219698,
@@ -101,6 +103,7 @@ describe('useCircularMovement', () => {
                 units: 'px',
             },
             {
+                index: 1,
                 position: {
                     x: -64.3344926310006,
                     y: 189.37020108219698,
@@ -120,6 +123,7 @@ describe('useCircularMovement', () => {
             useCircularMovement({
                 items: [
                     {
+                        index: 0,
                         radius: 0,
                         position: { x: 20, y: 0 },
                         units: 'px',
@@ -132,7 +136,6 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 20,
                 units: 'px',
-                interface: circularMovement,
                 onWinnerFound,
             }),
         );
@@ -142,11 +145,12 @@ describe('useCircularMovement', () => {
         expect(onWinnerFound).toHaveBeenCalledWith(null);
 
         act(() => {
-            spin();
+            spin(circularMovement);
             circularMovement.setTime(1000);
         });
 
         expect(onWinnerFound).toHaveBeenCalledWith({
+            index: 0,
             radius: 0,
             position: { x: -1.9606728399089415e-14, y: 20 },
             units: 'px',
@@ -160,6 +164,7 @@ describe('useCircularMovement', () => {
             useCircularMovement({
                 items: [
                     {
+                        index: 0,
                         position: {
                             x: 100,
                             y: 0,
@@ -168,6 +173,7 @@ describe('useCircularMovement', () => {
                         units: 'px',
                     },
                     {
+                        index: 1,
                         position: {
                             x: 200,
                             y: 0,
@@ -180,12 +186,12 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 200,
                 units: 'px',
-                interface: new TestCircularMovement(),
                 onWinnerFound,
             }),
         );
 
         expect(onWinnerFound).toHaveBeenCalledWith({
+            index: 1,
             radius: 10,
             position: { x: 200, y: 0 },
             units: 'px',
@@ -204,7 +210,6 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 0,
                 units: 'px',
-                interface: circularMovement,
                 onWinnerFound,
             }),
         );
@@ -212,7 +217,7 @@ describe('useCircularMovement', () => {
         const { spin } = result.current;
 
         act(() => {
-            spin();
+            spin(circularMovement);
             circularMovement.setTime(500);
         });
 
@@ -229,6 +234,7 @@ describe('useCircularMovement', () => {
             useCircularMovement({
                 items: [
                     {
+                        index: 0,
                         id: '1',
                         image: 'https://placehold.co/200x200',
                         position: { x: 0, y: 0 },
@@ -240,7 +246,6 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 0,
                 units: 'px',
-                interface: circularMovement,
                 onWinnerFound,
             }),
         );
@@ -248,7 +253,7 @@ describe('useCircularMovement', () => {
         const { spin } = result.current;
 
         act(() => {
-            spin();
+            spin(circularMovement);
             circularMovement.setTime(500);
         });
 

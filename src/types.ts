@@ -18,6 +18,7 @@ export type Units =
 export type PositionalLayoutItem<
     T extends Record<string, unknown>,
 > = T & {
+    index: number;
     position: Position;
     radius: number;
     units: Units;
@@ -57,6 +58,11 @@ export type Circle = {
      * The id of the circle.
      */
     id: string;
+
+    /**
+     * The index of the circle.
+     */
+    index: number;
 
     /**
      * The image to display in the circle.
@@ -117,7 +123,9 @@ export type CircularMovementReturn<
     T extends Record<string, unknown>,
 > = {
     items: PositionalLayoutItem<T>[];
-    spin: () => void;
+    spin: (
+        circularMovement: CircularMovementInterface,
+    ) => void;
 };
 
 export interface CircularMovementInterface {

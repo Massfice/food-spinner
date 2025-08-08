@@ -1,4 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import type {
     Circle,
     PositionalLayoutItem,
@@ -6,10 +10,11 @@ import type {
 } from '../types';
 import { CirclesWrapper } from './CirclesWrapper';
 import { useCircularMovement } from '../hooks/useCircularMovement';
-import type {
-    CircularMovementInterface,
-    SpinnerEventEmmitter,
-} from '../types';
+import type { SpinnerEventEmmitter } from '../types';
+import {
+    NearestCircularMovement,
+    RandomizedCircularMovement,
+} from '../utils/circularMovements';
 
 type SpinnerProps = PositionalLayoutReturn<Circle> & {
     /**
@@ -28,34 +33,6 @@ type SpinnerProps = PositionalLayoutReturn<Circle> & {
     className?: string;
 };
 
-class CircularMovement
-    implements CircularMovementInterface
-{
-    randomize(count: number): {
-        winningIndex: number;
-        fullSpins: number;
-        spinDuration: number;
-        initialTime: number;
-    } {
-        const winningIndex = Math.floor(
-            Math.random() * count,
-        );
-        const fullSpins = Math.floor(Math.random() * 5) + 1; // 1 to 5
-        const spinDuration = (Math.random() * 5 + 1) * 1000; // 1 to 6 seconds in milliseconds
-        const initialTime = performance.now();
-
-        return {
-            winningIndex,
-            fullSpins,
-            spinDuration,
-            initialTime,
-        };
-    }
-    forwardTime(callback: (time: number) => void): void {
-        requestAnimationFrame(callback);
-    }
-}
-
 export const Spinner: React.FC<SpinnerProps> = (props) => {
     const {
         className,
@@ -66,9 +43,13 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
         winningPosition,
     } = props;
 
+    const [winner, setWinner] =
+        useState<PositionalLayoutItem<Circle> | null>(null);
+
     const onWinnerFound = useCallback(
         (winner: PositionalLayoutItem<Circle> | null) => {
             if (winner) {
+                setWinner(winner);
                 props.onWinnerFound?.(winner);
             }
         },
@@ -78,15 +59,25 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
     const { items: transformedItems, spin } =
         useCircularMovement({
             ...props,
-            interface: new CircularMovement(),
             onWinnerFound,
         });
 
+    const makeSpin = useCallback(() => {
+        // spin(new RandomizedCircularMovement());
+        spin(
+            // new RandomizedCircularMovement(),
+            new NearestCircularMovement(
+                winner,
+                'counterclockwise',
+            ),
+        );
+    }, [spin]);
+
     useEffect(() => {
-        eventEmitter.on('spin', spin);
+        eventEmitter.on('spin', makeSpin);
 
         return () => {
-            eventEmitter.off('spin', spin);
+            eventEmitter.off('spin', makeSpin);
         };
     });
 

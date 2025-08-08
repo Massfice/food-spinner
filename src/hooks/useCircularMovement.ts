@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type {
     CircularMovementReturn,
     CircularMovementInterface,
@@ -14,7 +14,6 @@ import {
 
 type UseMovementProps<T extends Record<string, unknown>> =
     PositionalLayoutReturn<T> & {
-        interface: CircularMovementInterface;
         onWinnerFound: (
             winner: PositionalLayoutItem<T> | null,
         ) => void;
@@ -140,62 +139,77 @@ export const useCircularMovement = <
      *
      * @returns {void}
      */
-    const spin = (): void => {
-        if (!winningPosition) {
-            return;
-        }
-
-        const {
-            winningIndex,
-            fullSpins,
-            spinDuration,
-            initialTime,
-        } = props.interface.randomize(items.length);
-
-        const winner = items[winningIndex] || null;
-
-        const calculateEasedTime =
-            createEasedTimeCalculator(
-                spinDuration,
-                initialTime,
-            );
-
-        const calculateTotalRotation =
-            createTotalRotationCalculator(
-                winningPosition,
-                center,
-                fullSpins,
-            );
-
-        const forwardTime = (time: number) => {
-            const easedT = calculateEasedTime(time);
-
-            const totalRotation = calculateTotalRotation(
-                winner?.position,
-            );
-
-            const transformItem = createItemTransformer<T>(
-                totalRotation,
-                easedT,
-                center,
-                radius,
-            );
-
-            const newItems = items.map(transformItem);
-
-            setItems(newItems);
-
-            if (easedT < 1) {
-                props.interface.forwardTime(forwardTime);
-
+    const spin = useCallback(
+        (
+            circularMovement: CircularMovementInterface,
+        ): void => {
+            if (!winningPosition) {
                 return;
             }
 
-            onWinnerFound(newItems[winningIndex]);
-        };
+            const {
+                winningIndex,
+                fullSpins,
+                spinDuration,
+                initialTime,
+            } = circularMovement.randomize(items.length);
 
-        props.interface.forwardTime(forwardTime);
-    };
+            const winner = items[winningIndex] || null;
+
+            const calculateEasedTime =
+                createEasedTimeCalculator(
+                    spinDuration,
+                    initialTime,
+                );
+
+            const calculateTotalRotation =
+                createTotalRotationCalculator(
+                    winningPosition,
+                    center,
+                    fullSpins,
+                );
+
+            const forwardTime = (time: number) => {
+                const easedT = calculateEasedTime(time);
+
+                const totalRotation =
+                    calculateTotalRotation(
+                        winner?.position,
+                    );
+
+                const transformItem =
+                    createItemTransformer<T>(
+                        totalRotation,
+                        easedT,
+                        center,
+                        radius,
+                    );
+
+                const newItems = items.map(transformItem);
+
+                setItems(newItems);
+
+                if (easedT < 1) {
+                    circularMovement.forwardTime(
+                        forwardTime,
+                    );
+
+                    return;
+                }
+
+                onWinnerFound(newItems[winningIndex]);
+            };
+
+            circularMovement.forwardTime(forwardTime);
+        },
+        [
+            items,
+            onWinnerFound,
+            winningPosition,
+            center,
+            radius,
+        ],
+    );
 
     return { items, spin };
 };
