@@ -20,7 +20,7 @@ type UseMovementProps<T extends Record<string, unknown>> =
         ) => void;
     };
 
-const createElapsedTimeCalculator =
+const createEasedTimeCalculator =
     (spinDuration: number, initialTime: number) =>
     (time: number) => {
         const deltaTime = time - initialTime;
@@ -29,7 +29,7 @@ const createElapsedTimeCalculator =
             Math.min(deltaTime / spinDuration, 1),
         );
 
-        return { easedT, deltaTime };
+        return easedT;
     };
 
 const createTotalRotationCalculator = (
@@ -117,7 +117,6 @@ export const useCircularMovement = <
 
     const [items, setItems] = useState(initialItems);
 
-    let elapsedTime = 0;
     /**
      * Spin the items around the circle.
      *
@@ -131,18 +130,15 @@ export const useCircularMovement = <
      *    Total rotation is the angle needed to move the item to the winning position after the full spins.
      *    Elapsed time is the time that has passed since the start of the spin.
      * 4. Transform the items based on the total rotation and the elapsed time.
-     * 5. If the elapsed time is less than the spin duration, continue spinning. This reduces jumps.
-     * 6. If eased time is less than 1, continue spinning.
-     * 7. If the elapsed time is greater than the spin duration and eased time is 1, the winner is found
-     *    and the onWinnerFound callback is called. The winner is the item that is
+     * 6. If eased time is less than 1, continue spinning. Eased time is calculated based on elapsed time and equals to 1 when elapsed time is equal to spin duration or greater.
+     * 7. If the eased time is 1, the winner is found and the onWinnerFound callback is called. The winner is the item that is
      *    at the winning index.
-     * 8. Reset the elapsed time and continue spinning.
      *
      * Function uses wrapper interface to forward a time. Internally it uses requestAnimationFrame.
      *
      * @returns {void}
      */
-    const spin = () => {
+    const spin = (): void => {
         if (!winningPosition) {
             return;
         }
@@ -156,8 +152,8 @@ export const useCircularMovement = <
 
         const winner = items[winningIndex] || null;
 
-        const calculateElapsedTime =
-            createElapsedTimeCalculator(
+        const calculateEasedTime =
+            createEasedTimeCalculator(
                 spinDuration,
                 initialTime,
             );
@@ -170,9 +166,7 @@ export const useCircularMovement = <
             );
 
         const forwardTime = (time: number) => {
-            const { easedT, deltaTime } =
-                calculateElapsedTime(time);
-            elapsedTime += deltaTime;
+            const easedT = calculateEasedTime(time);
 
             const totalRotation = calculateTotalRotation(
                 winner?.position,
@@ -189,14 +183,13 @@ export const useCircularMovement = <
 
             setItems(newItems);
 
-            if (elapsedTime < spinDuration || easedT < 1) {
+            if (easedT < 1) {
                 props.interface.forwardTime(forwardTime);
 
                 return;
             }
 
             onWinnerFound(newItems[winningIndex]);
-            elapsedTime = 0;
         };
 
         props.interface.forwardTime(forwardTime);
