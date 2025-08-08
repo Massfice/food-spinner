@@ -67,7 +67,6 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
     const onWinnerFound = useCallback(
         (winner: PositionalLayoutItem<Circle> | null) => {
             if (winner) {
-                console.log(winner);
                 props.onWinnerFound?.(winner);
             }
         },
