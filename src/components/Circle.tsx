@@ -29,6 +29,16 @@ type CircleProps = {
     onMouseOver?: React.MouseEventHandler<unknown>;
 
     /**
+     * Event handler for when the mouse enters the circle.
+     */
+    onMouseEnter?: React.MouseEventHandler<unknown>;
+
+    /**
+     * Event handler for when the mouse leaves the circle.
+     */
+    onMouseLeave?: React.MouseEventHandler<unknown>;
+
+    /**
      * Event handler for when the circle is clicked.
      */
     onClick?: React.MouseEventHandler<unknown>;

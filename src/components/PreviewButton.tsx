@@ -51,10 +51,8 @@ export const PreviewButton: React.FC<PreviewButtonProps> = (
         <div
             style={{ width }}
             className={cn('absolute', props.className)}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
         >
-            <div className="relative w-full h-full">
+            <div className="relative w-full aspect-square">
                 <CircularImage
                     radius={radius}
                     radiusUnits={radiusUnits}
@@ -66,6 +64,8 @@ export const PreviewButton: React.FC<PreviewButtonProps> = (
                             'opacity-100': !showButton,
                         },
                     )}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                 />
                 <Circle
                     onClick={() =>
@@ -88,6 +88,8 @@ export const PreviewButton: React.FC<PreviewButtonProps> = (
                         width,
                         height: width,
                     }}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                 >
                     <span className="font-bold text-lg text-white">
                         🎯 Spin
