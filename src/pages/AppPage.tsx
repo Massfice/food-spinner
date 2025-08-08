@@ -49,15 +49,10 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
     });
 
     return (
-        <main className="w-full h-screen md:relative overflow-auto md:overflow-hidden">
-            <div className="flex md:static w-full h-full">
-                <img
-                    src="/foodspin.png"
-                    className="md:absolute top-[3%] left-[6%] z-30"
-                />
-
+        <main className="w-full h-screen md:relative overflow-hidden">
+            <div className="flex md:static w-full h-10 md:h-full">
                 <Navbar
-                    className="md:absolute top-[5%] left-[30%] z-30 text-xl"
+                    className="md:absolute top-[2%] left-[1%] z-30 text-xl w-full"
                     items={[
                         {
                             label: 'Breakfast',
@@ -73,41 +68,39 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
                         },
                     ]}
                 />
-
-                <ShopIcon
-                    className="left-[95%] top-[5%] w-full z-30 aspect-square"
-                    size={30}
-                />
             </div>
 
             <div className="relative p-100 md:static w=full">
-                <Circle
-                    className="absolute left-[-23%] bottom-[44%] md:left-[18%] md:bottom-[32%] w-full z-10"
-                    style={{
-                        backgroundColor: color,
-                    }}
-                >
-                    <Spinner
-                        className="w-full h-full"
-                        items={items}
-                        winningPosition={winningPosition}
-                        center={center}
-                        radius={radius}
-                        units={units}
+                <div className="absolute left-[-23%] bottom-[43%] md:left-[18%] md:bottom-[32%] w-full z-10">
+                    <Circle
+                        style={{
+                            backgroundColor: color,
+                        }}
+                    >
+                        <Spinner
+                            className="w-full h-full"
+                            items={items}
+                            winningPosition={
+                                winningPosition
+                            }
+                            center={center}
+                            radius={radius}
+                            units={units}
+                            eventEmitter={eventEmitter}
+                            onWinnerFound={setWinner}
+                        />
+                    </Circle>
+
+                    <PreviewButtonWithContext
+                        className="right-[18%] top-[91%] z-30"
                         eventEmitter={eventEmitter}
-                        onWinnerFound={setWinner}
+                        radius={20}
+                        radiusUnits="%"
                     />
-                </Circle>
+                </div>
             </div>
 
             <ProductInfoWithContext className="w-full md:absolute top-[10%] left-[3.9%] 2xl:top-[35%] 2xl:left-[6%]" />
-
-            <PreviewButtonWithContext
-                className="top-[58%] left-[56%] md:left-[60%] md:bottom-[-30%] z-30 aspect-square scale-220 md:scale-100"
-                eventEmitter={eventEmitter}
-                radius={20}
-                radiusUnits="%"
-            />
 
             <div className="absolute top-[90%] left-[7%] z-30">
                 <a

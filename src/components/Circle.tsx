@@ -68,7 +68,7 @@ export const Circle: React.FC<CircleProps> = ({
     return (
         <Component
             className={cn(
-                'bg-lime-100 aspect-square rounded-full overflow-hidden flex items-center justify-center',
+                'aspect-square overflow-hidden rounded-full flex items-center justify-center',
                 className,
             )}
             {...props}
