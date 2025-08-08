@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type {
     CircularMovementReturn,
     CircularMovementInterface,
@@ -113,9 +113,16 @@ export const useCircularMovement = <
                 item.position.y === winningPosition.y,
         ) ?? null;
 
-    onWinnerFound(initialWinner);
-
     const [items, setItems] = useState(initialItems);
+    const isInitialWinnerFound = useRef(false);
+
+    // Emit initial winner exactly once
+    useEffect(() => {
+        if (!isInitialWinnerFound.current) {
+            onWinnerFound(initialWinner);
+            isInitialWinnerFound.current = true;
+        }
+    }, []);
 
     /**
      * Spin the items around the circle.
@@ -188,6 +195,8 @@ export const useCircularMovement = <
 
                 return;
             }
+
+            console.log('found');
 
             onWinnerFound(newItems[winningIndex]);
         };
