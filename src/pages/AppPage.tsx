@@ -4,6 +4,7 @@ import { Spinner } from '../components/Spinner';
 import { usePositionalLayout } from '../hooks/usePositionalLayout';
 import { SpinnerEventEmmitter } from '../types';
 import { PreviewButton } from '../components/PreviewButton';
+import { ShopIcon } from '../components/ShopIcon';
 
 type AppPageProps = {
     /**
@@ -54,6 +55,7 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     radiusUnits: items[0].units,
                 }}
             />
+            <ShopIcon className="left-[95%] top-[3%] w-full z-30 aspect-square" />
         </main>
     );
 };
