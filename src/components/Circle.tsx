@@ -24,6 +24,11 @@ type CircleProps = {
     role?: string;
 
     /**
+     * Whether the circle is disabled.
+     */
+    disabled?: boolean;
+
+    /**
      * Event handler for when the mouse enters the circle.
      */
     onMouseOver?: React.MouseEventHandler<unknown>;

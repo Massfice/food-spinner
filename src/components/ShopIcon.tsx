@@ -73,7 +73,7 @@ export const ShopIcon: React.FC<ShopIconProps> = ({
                 </svg>
 
                 <Circle
-                    className="absolute bottom-0 right-0 bg-orange-400"
+                    className="absolute bottom-0 right-0 bg-purple-400"
                     style={{
                         width: size * 0.3,
                         height: size * 0.3,
