@@ -80,10 +80,29 @@ export type Circle = {
 export type PositionalLayoutReturn<
     T extends Record<string, unknown>,
 > = {
+    /**
+     * The items to layout.
+     */
     items: PositionalLayoutItem<T>[];
+
+    /**
+     * The winning position calculated by the algorithm.
+     */
     winningPosition: Position | null;
+
+    /**
+     * The center of the spinner.
+     */
     center: Position;
+
+    /**
+     * The radius of the spinner.
+     */
     radius: number;
+
+    /**
+     * The units of the spinner.
+     */
     units: Units;
 };
 
@@ -91,6 +110,15 @@ export type CircularMovementReturn<
     T extends Record<string, unknown>,
 > = {
     items: PositionalLayoutItem<T>[];
-    winner: PositionalLayoutItem<T> | null;
     spin: () => void;
 };
+
+export interface CircularMovementInterface {
+    randomize(count: number): {
+        winningIndex: number;
+        fullSpins: number;
+        spinDuration: number;
+        initialTime: number;
+    };
+    forwardTime(callback: (time: number) => void): void;
+}
