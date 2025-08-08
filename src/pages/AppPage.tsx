@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Circle } from '../components/Circle';
 import { Spinner } from '../components/Spinner';
 import { usePositionalLayout } from '../hooks/usePositionalLayout';
@@ -24,7 +24,15 @@ type AppPageProps = {
 
 const AppPageContent: React.FC<AppPageProps> = (props) => {
     const eventEmitter = new SpinnerEventEmmitter();
-    const { setWinner } = useContext(ProductsContext);
+    const { setWinner, winner } =
+        useContext(ProductsContext);
+
+    const color = useMemo(() => {
+        if (winner) {
+            return winner.color;
+        }
+        return '#ECFCCB';
+    }, [winner]);
 
     const {
         items,
@@ -41,56 +49,65 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
     });
 
     return (
-        <main className="w-full h-screen relative overflow-hidden">
-            <Circle className="absolute left-[18%] bottom-[32%] w-full z-10">
-                <Spinner
-                    className="w-full h-full"
-                    items={items}
-                    winningPosition={winningPosition}
-                    center={center}
-                    radius={radius}
-                    units={units}
-                    eventEmitter={eventEmitter}
-                    onWinnerFound={setWinner}
+        <main className="w-full h-screen md:relative overflow-auto md:overflow-hidden">
+            <div className="flex">
+                <img
+                    src="/foodspin.png"
+                    className="md:absolute top-[3%] left-[6%] z-30"
                 />
-            </Circle>
+
+                <Navbar
+                    className="md:absolute top-[5%] left-[30%] z-30 text-xl"
+                    items={[
+                        {
+                            label: 'Breakfast',
+                            link: '#breakfast',
+                        },
+                        {
+                            label: 'Lunch',
+                            link: '#lunch',
+                        },
+                        {
+                            label: 'Dinner',
+                            link: '#dinner',
+                        },
+                    ]}
+                />
+
+                <ShopIcon
+                    className="left-[95%] top-[5%] w-full z-30 aspect-square"
+                    size={30}
+                />
+            </div>
+
+            <div className="relative p-100 md:static w=full">
+                <Circle
+                    className="absolute left-[-23%] bottom-[44%] md:left-[18%] md:bottom-[32%] w-full z-10"
+                    style={{
+                        backgroundColor: color,
+                    }}
+                >
+                    <Spinner
+                        className="w-full h-full"
+                        items={items}
+                        winningPosition={winningPosition}
+                        center={center}
+                        radius={radius}
+                        units={units}
+                        eventEmitter={eventEmitter}
+                        onWinnerFound={setWinner}
+                    />
+                </Circle>
+            </div>
+
+            <ProductInfoWithContext className="w-full md:absolute top-[35%] left-[6%]" />
 
             <PreviewButtonWithContext
-                className="left-[60%] bottom-[-30%] w-full z-30 aspect-square"
+                className="top-[58%] left-[56%] md:left-[60%] md:bottom-[-30%] z-30 aspect-square scale-220 md:scale-100"
                 eventEmitter={eventEmitter}
                 radius={20}
                 radiusUnits="%"
             />
-
-            <ShopIcon
-                className="left-[95%] top-[5%] w-full z-30 aspect-square"
-                size={30}
-            />
-
-            <img
-                src="/foodspin.png"
-                className="absolute top-[3%] left-[6%] z-30"
-            />
-
-            <Navbar
-                className="absolute top-[5%] left-[30%] z-30 text-xl"
-                items={[
-                    {
-                        label: 'Breakfast',
-                        link: '#breakfast',
-                    },
-                    {
-                        label: 'Lunch',
-                        link: '#lunch',
-                    },
-                    {
-                        label: 'Dinner',
-                        link: '#dinner',
-                    },
-                ]}
-            />
-
-            <ProductInfoWithContext className="w-full absolute top-[35%] left-[6%]" />
 
             <div className="absolute top-[90%] left-[7%] z-30">
                 <a
