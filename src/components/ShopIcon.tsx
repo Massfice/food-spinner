@@ -39,16 +39,30 @@ export const ShopIcon: React.FC<ShopIconProps> = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <path
-                    d="M19 8H5L3 13V24C3 24.5523 3.44772 25 4 25H20C20.5523 25 21 24.5523 21 24V13L19 8Z"
+                {/* Rectangle bag body */}
+                <rect
+                    x="4"
+                    y="10"
+                    width="16"
+                    height="16"
                     stroke={color}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     fill="none"
                 />
+                {/* Left handle */}
                 <path
-                    d="M9 12V8C9 6.89543 9.89543 6 11 6H13C14.1046 6 15 6.89543 15 8V12"
+                    d="M8 10V6C8 4.89543 8.89543 4 10 4C11.1046 4 12 4.89543 12 6V10"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                />
+                {/* Right handle */}
+                <path
+                    d="M16 10V6C16 4.89543 15.1046 4 14 4C12.8954 4 12 4.89543 12 6V10"
                     stroke={color}
                     strokeWidth="2"
                     strokeLinecap="round"

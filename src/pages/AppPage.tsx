@@ -5,6 +5,7 @@ import { usePositionalLayout } from '../hooks/usePositionalLayout';
 import { SpinnerEventEmmitter } from '../types';
 import { PreviewButton } from '../components/PreviewButton';
 import { ShopIcon } from '../components/ShopIcon';
+import { Navbar } from '../components/Navbar';
 
 type AppPageProps = {
     /**
@@ -55,7 +56,32 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     radiusUnits: items[0].units,
                 }}
             />
-            <ShopIcon className="left-[95%] top-[3%] w-full z-30 aspect-square" />
+            <ShopIcon
+                className="left-[95%] top-[5%] w-full z-30 aspect-square"
+                size={30}
+            />
+            <img
+                src="/foodspin.png"
+                className="absolute top-[3%] left-[3%] z-30"
+            />
+
+            <Navbar
+                className="absolute top-[5%] left-[30%] z-30 text-xl"
+                items={[
+                    {
+                        label: 'Breakfast',
+                        link: '#breakfast',
+                    },
+                    {
+                        label: 'Lunch',
+                        link: '#lunch',
+                    },
+                    {
+                        label: 'Dinner',
+                        link: '#dinner',
+                    },
+                ]}
+            />
         </main>
     );
 };
