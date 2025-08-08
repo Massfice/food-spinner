@@ -27,11 +27,31 @@ type CircularImageProps = {
      * Styles to apply to the circular image.
      */
     style?: React.CSSProperties;
+
+    /**
+     * Event handler for when the mouse leaves the circular image.
+     */
+    onMouseOut?: React.MouseEventHandler<HTMLDivElement>;
+
+    /**
+     * Event handler for when the mouse enters the circular image.
+     */
+    onMouseOver?: React.MouseEventHandler<HTMLDivElement>;
+
+    /**
+     * Event handler for when the transition starts.
+     */
+    onTransitionStart?: React.TransitionEventHandler<HTMLDivElement>;
+
+    /**
+     * Event handler for when the transition ends.
+     */
+    onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>;
 };
 
 export const CircularImage: React.FC<
     CircularImageProps
-> = ({ radius, radiusUnits, image, style, className }) => {
+> = ({ radius, radiusUnits, image, style, ...props }) => {
     const width = useMemo(() => {
         return `${radius * 2}${radiusUnits}`;
     }, [radius, radiusUnits]);
@@ -44,7 +64,7 @@ export const CircularImage: React.FC<
                 ...style,
             }}
             role="image-wrapper"
-            className={className}
+            {...props}
         >
             <img
                 src={image}

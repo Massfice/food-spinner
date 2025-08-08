@@ -22,6 +22,39 @@ type CircleProps = {
      * The role of the circle.
      */
     role?: string;
+
+    /**
+     * Event handler for when the mouse enters the circle.
+     */
+    onMouseOver?: React.MouseEventHandler<unknown>;
+
+    /**
+     * Event handler for when the circle is clicked.
+     */
+    onClick?: React.MouseEventHandler<unknown>;
+
+    /**
+     * Event handler for when the mouse leaves the circle.
+     */
+    onMouseOut?: React.MouseEventHandler<unknown>;
+
+    /**
+     * Event handler for when the transition starts.
+     */
+    onTransitionStart?: React.TransitionEventHandler<unknown>;
+
+    /**
+     * Event handler for when the transition ends.
+     */
+    onTransitionEnd?: React.TransitionEventHandler<unknown>;
+};
+
+const Button = (props: CircleProps) => {
+    return <button {...props} />;
+};
+
+const Div = (props: CircleProps) => {
+    return <div {...props} />;
 };
 
 export const Circle: React.FC<CircleProps> = ({
@@ -29,8 +62,11 @@ export const Circle: React.FC<CircleProps> = ({
     className,
     ...props
 }) => {
+    const Component =
+        props.role === 'button' ? Button : Div;
+
     return (
-        <div
+        <Component
             className={cn(
                 'bg-lime-100 aspect-square rounded-full overflow-hidden flex items-center justify-center',
                 className,
@@ -38,6 +74,6 @@ export const Circle: React.FC<CircleProps> = ({
             {...props}
         >
             {children}
-        </div>
+        </Component>
     );
 };
