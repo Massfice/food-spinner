@@ -26,11 +26,16 @@ type CirclesWrapperProps = {
      * The border of the wrapper.
      */
     border?: CirclesWrapperBorder;
+
+    /**
+     * The winning area of the wrapper.
+     */
+    winningArea?: CirclesWrapperBorder;
 };
 
 export const CirclesWrapper: React.FC<
     CirclesWrapperProps
-> = ({ circles, className, border }) => {
+> = ({ circles, className, border, winningArea }) => {
     return (
         <div
             className={cn(
@@ -76,6 +81,28 @@ export const CirclesWrapper: React.FC<
                             },
                             border.radius,
                             border.units,
+                        ),
+                    }}
+                />
+            )}
+
+            {winningArea && (
+                <div
+                    className="absolute z-0 border-2 border-solid border-4 border-green-400 rounded-full z-20"
+                    style={{
+                        width: `${winningArea.radius * 2}${
+                            winningArea.units
+                        }`,
+                        height: `${winningArea.radius * 2}${
+                            winningArea.units
+                        }`,
+                        ...positionCircle(
+                            {
+                                x: winningArea.x,
+                                y: winningArea.y,
+                            },
+                            winningArea.radius,
+                            winningArea.units,
                         ),
                     }}
                 />

@@ -119,3 +119,16 @@ export const WithBorder: StoryObj<typeof meta> = {
         },
     },
 };
+
+export const WithWinningArea: StoryObj<typeof meta> = {
+    args: {
+        className: 'w-200 h-200',
+        circles: [],
+        winningArea: {
+            x: 50,
+            y: 50,
+            radius: 30,
+            units: '%',
+        },
+    },
+};

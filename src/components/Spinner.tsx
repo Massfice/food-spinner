@@ -61,6 +61,7 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
         radius,
         units,
         eventEmitter,
+        winningPosition,
     } = props;
 
     const { items: transformedItems, spin } =
@@ -106,6 +107,18 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
                 radius,
                 units,
             }}
+            winningArea={
+                winningPosition
+                    ? {
+                          x: winningPosition.x,
+                          y: winningPosition.y,
+                          radius:
+                              transformedItems[0]?.radius ??
+                              0,
+                          units,
+                      }
+                    : undefined
+            }
         />
     );
 };
