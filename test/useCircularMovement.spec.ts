@@ -1,26 +1,10 @@
-import { describe } from 'vitest';
+import { describe, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
+import { useCircularMovement } from '../src/hooks/useCircularMovement';
 import {
-    useCircularMovement,
-    type CircularMovementInterface,
-} from '../src/hooks/useCircularMovement';
-import { PositionalLayoutItem } from '../src/types';
-
-class DummyCircularMovement
-    implements CircularMovementInterface
-{
-    forwardTime(): void {
-        throw new Error('Method not implemented.');
-    }
-    randomize(): {
-        winningIndex: number;
-        fullSpins: number;
-        spinDuration: number;
-        initialTime: number;
-    } {
-        throw new Error('Method not implemented.');
-    }
-}
+    PositionalLayoutItem,
+    CircularMovementInterface,
+} from '../src/types';
 
 class TestCircularMovement
     implements CircularMovementInterface
@@ -53,7 +37,9 @@ class TestCircularMovement
 }
 
 describe('useCircularMovement', () => {
-    it.only('moves the items', () => {
+    it('moves the items', () => {
+        const onWinnerFound = vi.fn();
+
         const initialItems: PositionalLayoutItem<{}>[] = [
             {
                 position: {
@@ -83,18 +69,18 @@ describe('useCircularMovement', () => {
                 radius: 200,
                 units: 'px',
                 interface: circularMovement,
+                onWinnerFound,
             }),
         );
 
-        const { winner, spin } = result.current;
+        const { spin } = result.current;
 
-        expect(winner).toBeNull();
+        expect(onWinnerFound).toHaveBeenCalledWith(null);
 
         act(() => {
             spin();
             circularMovement.setTime(16);
             circularMovement.setTime(32);
-            circularMovement.setTime(1000);
         });
 
         const { items } = result.current;
@@ -105,13 +91,72 @@ describe('useCircularMovement', () => {
             initialItems.map((item) => item.position),
         );
 
-        expect(items).toEqual([]);
+        expect(items).toEqual([
+            {
+                position: {
+                    x: -64.3344926310006,
+                    y: 189.37020108219698,
+                },
+                radius: 10,
+                units: 'px',
+            },
+            {
+                position: {
+                    x: -64.3344926310006,
+                    y: 189.37020108219698,
+                },
+                radius: 10,
+                units: 'px',
+            },
+        ]);
     });
 
-    it('returns the winner', () => {});
+    it('calls the onWinnerFound callback', () => {
+        const onWinnerFound = vi.fn();
 
-    it('returns the winner immediately if winner is found', () => {
+        const circularMovement = new TestCircularMovement();
+
         const { result } = renderHook(() =>
+            useCircularMovement({
+                items: [
+                    {
+                        radius: 0,
+                        position: { x: 20, y: 0 },
+                        units: 'px',
+                    },
+                ],
+                winningPosition: {
+                    x: 0,
+                    y: 20,
+                },
+                center: { x: 0, y: 0 },
+                radius: 20,
+                units: 'px',
+                interface: circularMovement,
+                onWinnerFound,
+            }),
+        );
+
+        const { spin } = result.current;
+
+        expect(onWinnerFound).toHaveBeenCalledWith(null);
+
+        act(() => {
+            spin();
+            circularMovement.setTime(1000);
+        });
+
+        expect(onWinnerFound).toHaveBeenCalledWith({
+            radius: 0,
+            position: { x: -1.9606728399089415e-14, y: 20 },
+            units: 'px',
+        });
+    });
+
+    it('calls the onWinnerFound callback immediately if winner is found', () => {
+        const onWinnerFound = vi.fn();
+
+        renderHook(() =>
             useCircularMovement({
                 items: [
                     {
@@ -135,11 +180,12 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 200,
                 units: 'px',
-                interface: new DummyCircularMovement(),
+                interface: new TestCircularMovement(),
+                onWinnerFound,
             }),
         );
 
-        expect(result.current.winner).toEqual({
+        expect(onWinnerFound).toHaveBeenCalledWith({
             radius: 10,
             position: { x: 200, y: 0 },
             units: 'px',
@@ -147,6 +193,10 @@ describe('useCircularMovement', () => {
     });
 
     it('returns empty items and no winner if no items are provided', () => {
+        const onWinnerFound = vi.fn();
+
+        const circularMovement = new TestCircularMovement();
+
         const { result } = renderHook(() =>
             useCircularMovement({
                 items: [],
@@ -154,15 +204,27 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 0,
                 units: 'px',
-                interface: new DummyCircularMovement(),
+                interface: circularMovement,
+                onWinnerFound,
             }),
         );
 
+        const { spin } = result.current;
+
+        act(() => {
+            spin();
+            circularMovement.setTime(500);
+        });
+
         expect(result.current.items).toEqual([]);
-        expect(result.current.winner).toBeNull();
+        expect(onWinnerFound).toHaveBeenCalledWith(null);
     });
 
     it('returns empty items and no winner if no winning position is provided', () => {
+        const onWinnerFound = vi.fn();
+
+        const circularMovement = new TestCircularMovement();
+
         const { result } = renderHook(() =>
             useCircularMovement({
                 items: [
@@ -178,10 +240,19 @@ describe('useCircularMovement', () => {
                 center: { x: 0, y: 0 },
                 radius: 0,
                 units: 'px',
-                interface: new DummyCircularMovement(),
+                interface: circularMovement,
+                onWinnerFound,
             }),
         );
 
+        const { spin } = result.current;
+
+        act(() => {
+            spin();
+            circularMovement.setTime(500);
+        });
+
         expect(result.current.items).toEqual([]);
+        expect(onWinnerFound).toHaveBeenCalledWith(null);
     });
 });
