@@ -39,6 +39,16 @@ type CircularImageProps = {
     onMouseOver?: React.MouseEventHandler<HTMLDivElement>;
 
     /**
+     * Event handler for when the mouse enters the circular image.
+     */
+    onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+
+    /**
+     * Event handler for when the mouse leaves the circular image.
+     */
+    onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+
+    /**
      * Event handler for when the transition starts.
      */
     onTransitionStart?: React.TransitionEventHandler<HTMLDivElement>;

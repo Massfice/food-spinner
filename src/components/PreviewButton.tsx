@@ -49,52 +49,51 @@ export const PreviewButton: React.FC<PreviewButtonProps> = (
 
     return (
         <div
-            style={{
-                position: 'relative',
-                width,
-                height: width,
-            }}
+            style={{ width }}
+            className={cn('absolute', props.className)}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <CircularImage
-                radius={radius}
-                radiusUnits={radiusUnits}
-                image={image}
-                className={cn(
-                    'absolute transition-all duration-300 ease-out',
-                    props.className,
-                    {
-                        'opacity-0': showButton,
-                        'opacity-100': !showButton,
-                    },
-                )}
-            />
-            <Circle
-                onClick={() =>
-                    props.eventEmitter.emit('spin')
-                }
-                className={cn(
-                    'absolute transition-all duration-300 ease-out bg-orange-400 shadow-lg shadow-orange-500/50',
-                    'active:bg-orange-500 active:shadow-orange-600/50 active:scale-95',
-                    props.className,
-                    {
-                        'opacity-0': !showButton,
-                        'opacity-100': showButton,
-                        'pointer-events-auto': showButton,
-                        'pointer-events-none': !showButton,
-                    },
-                )}
-                role="button"
-                style={{
-                    width,
-                    height: width,
-                }}
-            >
-                <span className="font-bold text-lg text-white">
-                    🎯 Spin
-                </span>
-            </Circle>
+            <div className="relative w-full h-full">
+                <CircularImage
+                    radius={radius}
+                    radiusUnits={radiusUnits}
+                    image={image}
+                    className={cn(
+                        'absolute w-full h-full transition-all duration-300 ease-out',
+                        {
+                            'opacity-0': showButton,
+                            'opacity-100': !showButton,
+                        },
+                    )}
+                />
+                <Circle
+                    onClick={() =>
+                        props.eventEmitter.emit('spin')
+                    }
+                    className={cn(
+                        'absolute transition-all duration-300 ease-out bg-orange-400 shadow-lg shadow-orange-500/50',
+                        'active:bg-orange-500 active:shadow-orange-600/50 active:scale-95',
+                        {
+                            'opacity-0': !showButton,
+                            'opacity-100': showButton,
+                            'pointer-events-auto':
+                                showButton,
+                            'pointer-events-none':
+                                !showButton,
+                        },
+                    )}
+                    role="button"
+                    style={{
+                        width,
+                        height: width,
+                    }}
+                >
+                    <span className="font-bold text-lg text-white">
+                        🎯 Spin
+                    </span>
+                </Circle>
+            </div>
         </div>
     );
 };

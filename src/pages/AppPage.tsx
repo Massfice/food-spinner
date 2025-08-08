@@ -2,8 +2,8 @@ import React from 'react';
 import { Circle } from '../components/Circle';
 import { Spinner } from '../components/Spinner';
 import { usePositionalLayout } from '../hooks/usePositionalLayout';
-import { useEffect } from 'react';
 import { SpinnerEventEmmitter } from '../types';
+import { PreviewButton } from '../components/PreviewButton';
 
 type AppPageProps = {
     /**
@@ -17,12 +17,6 @@ type AppPageProps = {
 
 export const AppPage: React.FC<AppPageProps> = (props) => {
     const eventEmitter = new SpinnerEventEmmitter();
-
-    useEffect(() => {
-        setTimeout(() => {
-            eventEmitter.emit('spin');
-        }, 1000);
-    }, []);
 
     const {
         items,
@@ -51,6 +45,15 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     eventEmitter={eventEmitter}
                 />
             </Circle>
+            <PreviewButton
+                className="left-[60%] bottom-[-30%] w-full z-30 aspect-square"
+                eventEmitter={eventEmitter}
+                itemToDisplay={{
+                    image: items[0].image,
+                    radius: 20,
+                    radiusUnits: items[0].units,
+                }}
+            />
         </main>
     );
 };
