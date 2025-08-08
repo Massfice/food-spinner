@@ -1,9 +1,9 @@
 import React from 'react';
-import { EventEmitter } from 'events';
 import { Circle } from '../components/Circle';
 import { Spinner } from '../components/Spinner';
 import { usePositionalLayout } from '../hooks/usePositionalLayout';
 import { useEffect } from 'react';
+import { SpinnerEventEmmitter } from '../types';
 
 type AppPageProps = {
     /**
@@ -16,7 +16,7 @@ type AppPageProps = {
 };
 
 export const AppPage: React.FC<AppPageProps> = (props) => {
-    const eventEmitter = new EventEmitter<{ spin: [] }>();
+    const eventEmitter = new SpinnerEventEmmitter();
 
     useEffect(() => {
         setTimeout(() => {

@@ -5,9 +5,11 @@ import type {
     PositionalLayoutReturn,
 } from '../types';
 import { CirclesWrapper } from './CirclesWrapper';
-import { EventEmitter } from 'events';
 import { useCircularMovement } from '../hooks/useCircularMovement';
-import type { CircularMovementInterface } from '../types';
+import type {
+    CircularMovementInterface,
+    SpinnerEventEmmitter,
+} from '../types';
 
 type SpinnerProps = PositionalLayoutReturn<Circle> & {
     /**
@@ -18,7 +20,7 @@ type SpinnerProps = PositionalLayoutReturn<Circle> & {
     /**
      * The event emitter to be used to emit spin event.
      */
-    eventEmitter: EventEmitter<{ spin: [] }>;
+    eventEmitter: SpinnerEventEmmitter;
 
     /**
      * The classes of the spinner.

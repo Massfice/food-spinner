@@ -1,3 +1,5 @@
+import EventEmitter from 'events';
+
 export type Position = {
     x: number;
     y: number;
@@ -122,3 +124,7 @@ export interface CircularMovementInterface {
     };
     forwardTime(callback: (time: number) => void): void;
 }
+
+export class SpinnerEventEmmitter extends EventEmitter<{
+    spin: [];
+}> {}
