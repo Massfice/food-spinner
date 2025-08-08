@@ -64,33 +64,30 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
         winningPosition,
     } = props;
 
+    const onWinnerFound = useCallback(
+        (winner: PositionalLayoutItem<Circle> | null) => {
+            if (winner) {
+                console.log(winner);
+                props.onWinnerFound?.(winner);
+            }
+        },
+        [props.onWinnerFound],
+    );
+
     const { items: transformedItems, spin } =
         useCircularMovement({
             ...props,
             interface: new CircularMovement(),
-            onWinnerFound: useCallback(
-                (
-                    winner: PositionalLayoutItem<Circle> | null,
-                ) => {
-                    if (winner) {
-                        props.onWinnerFound?.(winner);
-                    }
-                },
-                [props.onWinnerFound],
-            ),
+            onWinnerFound,
         });
 
-    const makeSpin = useCallback(() => {
-        spin();
-    }, [spin]);
-
     useEffect(() => {
-        eventEmitter.on('spin', makeSpin);
+        eventEmitter.on('spin', spin);
 
         return () => {
-            eventEmitter.off('spin', makeSpin);
+            eventEmitter.off('spin', spin);
         };
-    }, [eventEmitter, makeSpin]);
+    }, []);
 
     return (
         <CirclesWrapper
