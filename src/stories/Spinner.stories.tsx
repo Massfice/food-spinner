@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Spinner } from '../components/Spinner';
 import EventEmitter from 'events';
-import { useEffect, useState } from 'react';
-import type { Circle } from '../types';
+import { useEffect } from 'react';
 
 const meta: Meta<typeof Spinner> = {
     title: 'Components/Spinner',
@@ -37,24 +36,14 @@ export const Default: StoryObj<typeof Spinner> = {
             spin: [];
         }>();
 
-        const [winner, setWinner] = useState<Circle | null>(
-            null,
-        );
-
         useEffect(() => {
-            if (!winner) {
-                return;
-            }
-
-            setWinner(null);
             eventEmitter.emit('spin');
-        }, [winner]);
+        }, []);
 
         return (
             <Spinner
                 {...args}
                 eventEmitter={eventEmitter}
-                onWinnerFound={setWinner}
             />
         );
     },
