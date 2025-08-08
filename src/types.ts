@@ -77,6 +77,11 @@ export type Circle = {
      * The units of the circle.
      */
     units: Units;
+
+    name: string;
+    price: number;
+    description: string;
+    color: string;
 };
 
 export type PositionalLayoutReturn<
@@ -128,3 +133,12 @@ export interface CircularMovementInterface {
 export class SpinnerEventEmmitter extends EventEmitter<{
     spin: [];
 }> {}
+
+export type Product = {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    color: string;
+};

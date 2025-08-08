@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Circle } from '../components/Circle';
 import { Spinner } from '../components/Spinner';
 import { usePositionalLayout } from '../hooks/usePositionalLayout';
-import { SpinnerEventEmmitter } from '../types';
-import { PreviewButton } from '../components/PreviewButton';
+import {
+    type Product,
+    SpinnerEventEmmitter,
+} from '../types';
 import { ShopIcon } from '../components/ShopIcon';
 import { Navbar } from '../components/Navbar';
-import { ProductInfo } from '../components/ProductInfo';
+import {
+    ProductsContext,
+    ProductsProvider,
+} from '../context/ProductsContext';
+import { ProductInfoWithContext } from '../components/ProductInfoWithContext';
+import { PreviewButtonWithContext } from '../components/PreviewButtonWithContext';
 
 type AppPageProps = {
     /**
      * The items to display in the app.
      */
-    items: {
-        id: string;
-        image: string;
-    }[];
+    items: Product[];
 };
 
-export const AppPage: React.FC<AppPageProps> = (props) => {
+const AppPageContent: React.FC<AppPageProps> = (props) => {
     const eventEmitter = new SpinnerEventEmmitter();
+    const { setWinner } = useContext(ProductsContext);
 
     const {
         items,
@@ -46,17 +51,15 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     radius={radius}
                     units={units}
                     eventEmitter={eventEmitter}
+                    onWinnerFound={setWinner}
                 />
             </Circle>
 
-            <PreviewButton
+            <PreviewButtonWithContext
                 className="left-[60%] bottom-[-30%] w-full z-30 aspect-square"
                 eventEmitter={eventEmitter}
-                itemToDisplay={{
-                    image: items[0].image,
-                    radius: 20,
-                    radiusUnits: items[0].units,
-                }}
+                radius={20}
+                radiusUnits="%"
             />
 
             <ShopIcon
@@ -87,13 +90,7 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                 ]}
             />
 
-            <ProductInfo
-                className="w-full absolute top-[35%] left-[6%]"
-                name="Product Name"
-                price={100}
-                description="Product Description"
-                color="#7FFF00"
-            />
+            <ProductInfoWithContext className="w-full absolute top-[35%] left-[6%]" />
 
             <div className="absolute top-[90%] left-[7%] z-30">
                 <a
@@ -104,5 +101,13 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                 </a>
             </div>
         </main>
+    );
+};
+
+export const AppPage: React.FC<AppPageProps> = (props) => {
+    return (
+        <ProductsProvider>
+            <AppPageContent {...props} />
+        </ProductsProvider>
     );
 };

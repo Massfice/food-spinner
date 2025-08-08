@@ -88,7 +88,7 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
         return () => {
             eventEmitter.off('spin', spin);
         };
-    }, []);
+    });
 
     return (
         <CirclesWrapper
