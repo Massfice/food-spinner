@@ -94,6 +94,15 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                 description="Product Description"
                 color="#7FFF00"
             />
+
+            <div className="absolute top-[90%] left-[7%] z-30">
+                <a
+                    href="#video"
+                    className="hover:underline underline-offset-4 text-xl"
+                >
+                    Watch The Video
+                </a>
+            </div>
         </main>
     );
 };
