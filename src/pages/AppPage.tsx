@@ -6,6 +6,7 @@ import { SpinnerEventEmmitter } from '../types';
 import { PreviewButton } from '../components/PreviewButton';
 import { ShopIcon } from '../components/ShopIcon';
 import { Navbar } from '../components/Navbar';
+import { ProductInfo } from '../components/ProductInfo';
 
 type AppPageProps = {
     /**
@@ -47,6 +48,7 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     eventEmitter={eventEmitter}
                 />
             </Circle>
+
             <PreviewButton
                 className="left-[60%] bottom-[-30%] w-full z-30 aspect-square"
                 eventEmitter={eventEmitter}
@@ -56,13 +58,15 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                     radiusUnits: items[0].units,
                 }}
             />
+
             <ShopIcon
                 className="left-[95%] top-[5%] w-full z-30 aspect-square"
                 size={30}
             />
+
             <img
                 src="/foodspin.png"
-                className="absolute top-[3%] left-[3%] z-30"
+                className="absolute top-[3%] left-[6%] z-30"
             />
 
             <Navbar
@@ -81,6 +85,14 @@ export const AppPage: React.FC<AppPageProps> = (props) => {
                         link: '#dinner',
                     },
                 ]}
+            />
+
+            <ProductInfo
+                className="w-full absolute top-[35%] left-[6%]"
+                name="Product Name"
+                price={100}
+                description="Product Description"
+                color="#7FFF00"
             />
         </main>
     );
