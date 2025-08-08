@@ -50,7 +50,7 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
 
     return (
         <main className="w-full h-screen md:relative overflow-auto md:overflow-hidden">
-            <div className="flex">
+            <div className="flex md:static w-full h-full">
                 <img
                     src="/foodspin.png"
                     className="md:absolute top-[3%] left-[6%] z-30"
@@ -100,7 +100,7 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
                 </Circle>
             </div>
 
-            <ProductInfoWithContext className="w-full md:absolute top-[35%] left-[6%]" />
+            <ProductInfoWithContext className="w-full md:absolute top-[10%] left-[3.9%] 2xl:top-[35%] 2xl:left-[6%]" />
 
             <PreviewButtonWithContext
                 className="top-[58%] left-[56%] md:left-[60%] md:bottom-[-30%] z-30 aspect-square scale-220 md:scale-100"
