@@ -92,3 +92,41 @@ export const movePoint = (
 
     return newPosition;
 };
+
+/**
+ * Calculate the clockwise difference between two angles.
+ *
+ * @param {number} startAngle - The start angle.
+ * @param {number} endAngle - The end angle.
+ * @returns {number} The clockwise difference between the two angles.
+ */
+export const calculateClockwiseDfiff = (
+    startAngle: number,
+    endAngle: number,
+): number => endAngle - startAngle;
+
+/**
+ * Calculate the counter-clockwise difference between two angles.
+ *
+ * @param {number} startAngle - The start angle.
+ * @param {number} endAngle - The end angle.
+ * @returns {number} The counter-clockwise difference between the two angles.
+ */
+export const calculateCounterClockwiseDiff = (
+    startAngle: number,
+    endAngle: number,
+): number => startAngle - endAngle;
+
+/**
+ * Make an angle positive.
+ *
+ * @param {number} angle - The angle to make positive.
+ * @returns {number} The positive angle.
+ */
+export const positive = (angle: number): number => {
+    if (angle >= 0) {
+        return angle;
+    }
+
+    return angle + 2 * Math.PI;
+};

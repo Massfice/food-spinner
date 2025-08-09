@@ -1,8 +1,15 @@
 import type {
     Circle,
     CircularMovementInterface,
+    Position,
     PositionalLayoutItem,
 } from '../types';
+import {
+    calculateClockwiseDfiff,
+    calculateCounterClockwiseDiff,
+    getAngle,
+    positive,
+} from './math';
 
 abstract class AnimatedCircularMovement
     implements CircularMovementInterface
@@ -49,56 +56,118 @@ export class NearestCircularMovement extends AnimatedCircularMovement {
 
     private readonly winner: PositionalLayoutItem<Circle> | null;
 
+    private readonly items: PositionalLayoutItem<Circle>[];
+
+    private readonly center: Position;
+
     constructor(
         winner: PositionalLayoutItem<Circle> | null,
         direction: 'clockwise' | 'counterclockwise',
+        items: PositionalLayoutItem<Circle>[],
+        center: Position,
     ) {
         super();
 
         this.winner = winner;
         this.direction = direction;
+        this.items = items;
+        this.center = center;
     }
 
-    randomize(count: number): {
+    randomize(_count: number): {
         winningIndex: number;
         fullSpins: number;
         spinDuration: number;
         initialTime: number;
     } {
-        const randomValue = Math.random() * 700 + 300; // 300 to 1000
-
-        if (count < 2 || !this.winner) {
-            return {
-                winningIndex: 0,
-                fullSpins: 0,
-                spinDuration: randomValue,
-                initialTime: performance.now(),
-            };
+        if (!this.winner) {
+            throw new Error('No winner provided');
         }
 
-        let winningIndex = this.winner.index;
-
-        if (this.direction === 'clockwise') {
-            winningIndex--;
-
-            if (winningIndex < 0) {
-                winningIndex = count - 1;
-            }
+        if (this.items.length < 2) {
+            throw new Error(
+                'There must be at least 2 items',
+            );
         }
 
-        if (this.direction === 'counterclockwise') {
-            winningIndex++;
+        const spinDuration = 100;
 
-            if (winningIndex >= count) {
-                winningIndex = 0;
-            }
-        }
+        const { winningIndex, fullSpins } =
+            this.direction === 'clockwise'
+                ? this.getDataClockwise()
+                : this.getDataCounterClockwise();
 
         return {
             winningIndex,
-            fullSpins: 0,
-            spinDuration: randomValue,
+            fullSpins,
+            spinDuration,
             initialTime: performance.now(),
         };
+    }
+
+    private getDataClockwise(): {
+        winningIndex: number;
+        fullSpins: number;
+    } {
+        const { index, negative } = this.getData(
+            calculateClockwiseDfiff,
+        );
+
+        return {
+            winningIndex: index,
+            fullSpins: negative ? 1 : 0,
+        };
+    }
+
+    private getDataCounterClockwise(): {
+        winningIndex: number;
+        fullSpins: number;
+    } {
+        const { index, negative } = this.getData(
+            calculateCounterClockwiseDiff,
+        );
+
+        return {
+            winningIndex: index,
+            fullSpins: negative ? 1 : 0,
+        };
+    }
+
+    private getData(
+        calculate: (
+            angle1: number,
+            angle2: number,
+        ) => number,
+    ): { index: number; negative: boolean } {
+        const winnerAngle = getAngle(
+            this.winner!.position.x,
+            this.winner!.position.y,
+            this.center,
+        );
+
+        const [{ index, negative }] = this.items
+            .map((item) => {
+                const angle = getAngle(
+                    item.position.x,
+                    item.position.y,
+                    this.center,
+                );
+
+                const diff = calculate(winnerAngle, angle);
+
+                return {
+                    index: item.index,
+                    diff,
+                    negative: diff < 0,
+                };
+            })
+            .filter((item) => item.diff !== 0)
+            .map((item) => ({
+                ...item,
+                diff: positive(item.diff),
+            }))
+            .sort((a, b) => a.diff - b.diff);
+
+        return { index, negative };
     }
 }

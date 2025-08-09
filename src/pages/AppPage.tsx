@@ -106,6 +106,9 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
                                 'counterclockwise',
                             );
                         }}
+                        disabled={
+                            !winner || items.length < 2
+                        }
                     />
                     <ArrowWithContext
                         className="absolute right-[64%] top-[100%] z-30"
@@ -115,6 +118,9 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
                                 'clockwise',
                             );
                         }}
+                        disabled={
+                            !winner || items.length < 2
+                        }
                     />
                 </div>
             </div>

@@ -72,6 +72,8 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
                 new NearestCircularMovement(
                     winner,
                     direction,
+                    transformedItems,
+                    center,
                 ),
             );
         },
