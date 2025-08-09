@@ -107,3 +107,5 @@ The entire movement system is the core innovation of this project, featuring sop
 ---
 
 _Built for food lovers who want an engaging way to discover their next meal! 🌟_
+
+**Created by Adrian Larysz**
