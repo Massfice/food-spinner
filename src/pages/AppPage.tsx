@@ -6,7 +6,6 @@ import {
     type Product,
     SpinnerEventEmmitter,
 } from '../types';
-import { ShopIcon } from '../components/ShopIcon';
 import { Navbar } from '../components/Navbar';
 import {
     ProductsContext,
@@ -14,6 +13,7 @@ import {
 } from '../context/ProductsContext';
 import { ProductInfoWithContext } from '../components/ProductInfoWithContext';
 import { PreviewButtonWithContext } from '../components/PreviewButtonWithContext';
+import { ArrowWithContext } from '../components/ArrowWithContext';
 
 type AppPageProps = {
     /**
@@ -96,6 +96,25 @@ const AppPageContent: React.FC<AppPageProps> = (props) => {
                         eventEmitter={eventEmitter}
                         radius={20}
                         radiusUnits="%"
+                    />
+
+                    <ArrowWithContext
+                        className="absolute right-[35%] top-[100%] z-30"
+                        onClick={() => {
+                            eventEmitter.emit(
+                                'forward',
+                                'counterclockwise',
+                            );
+                        }}
+                    />
+                    <ArrowWithContext
+                        className="absolute right-[64%] top-[100%] z-30"
+                        onClick={() => {
+                            eventEmitter.emit(
+                                'forward',
+                                'clockwise',
+                            );
+                        }}
                     />
                 </div>
             </div>

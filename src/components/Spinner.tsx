@@ -63,21 +63,29 @@ export const Spinner: React.FC<SpinnerProps> = (props) => {
         });
 
     const makeSpin = useCallback(() => {
-        // spin(new RandomizedCircularMovement());
-        spin(
-            // new RandomizedCircularMovement(),
-            new NearestCircularMovement(
-                winner,
-                'counterclockwise',
-            ),
-        );
+        spin(new RandomizedCircularMovement());
     }, [spin]);
+
+    const onForward = useCallback(
+        (direction: 'clockwise' | 'counterclockwise') => {
+            spin(
+                new NearestCircularMovement(
+                    winner,
+                    direction,
+                ),
+            );
+        },
+        [spin],
+    );
 
     useEffect(() => {
         eventEmitter.on('spin', makeSpin);
 
+        eventEmitter.on('forward', onForward);
+
         return () => {
             eventEmitter.off('spin', makeSpin);
+            eventEmitter.off('forward', onForward);
         };
     });
 

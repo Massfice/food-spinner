@@ -140,6 +140,7 @@ export interface CircularMovementInterface {
 
 export class SpinnerEventEmmitter extends EventEmitter<{
     spin: [];
+    forward: ['clockwise' | 'counterclockwise'];
 }> {}
 
 export type Product = {

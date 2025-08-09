@@ -17,16 +17,25 @@ type ArrowProps = {
      * The style of the arrow.
      */
     style?: React.CSSProperties;
+
+    /**
+     * The class name of the arrow.
+     */
+    className?: string;
 };
 
 export const Arrow: React.FC<ArrowProps> = (props) => {
     return (
         <Circle
-            className={cn('w-10 h-10 bg-red-500', {
-                'opacity-50': props.disabled,
-                'transition-all duration-300 ease-out active:scale-80 hover:scale-120':
-                    !props.disabled,
-            })}
+            className={cn(
+                'w-10 h-10 bg-red-500',
+                props.className,
+                {
+                    'opacity-50': props.disabled,
+                    'transition-all duration-300 ease-out active:scale-80 hover:scale-120':
+                        !props.disabled,
+                },
+            )}
             role="button"
             onClick={props.onClick}
             style={props.style}
