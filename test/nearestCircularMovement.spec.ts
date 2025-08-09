@@ -118,7 +118,6 @@ describe('NearestCircularMovement', () => {
                 winningIndex: nearest.index,
                 fullSpins,
                 spinDuration: 100,
-                direction: 'clockwise',
             });
         },
     );
@@ -165,7 +164,6 @@ describe('NearestCircularMovement', () => {
                 winningIndex: nearest.index,
                 fullSpins,
                 spinDuration: 100,
-                direction: 'counterclockwise',
             });
         },
     );
