@@ -35,6 +35,7 @@ const createTotalRotationCalculator = (
     winningSpotPosition: Position,
     center: Position,
     fullSpins: number,
+    direction?: 'clockwise' | 'counterclockwise',
 ) => {
     const positionToAngle = (position: Position) => {
         const angle = getAngle(
@@ -57,8 +58,20 @@ const createTotalRotationCalculator = (
             winningSpotPosition,
         );
 
-        const angleToWinningSpot =
+        let angleToWinningSpot =
             winningSpotAngle - winnerCurrentAngle;
+
+        if (direction) {
+            if (direction === 'clockwise') {
+                if (angleToWinningSpot < 0) {
+                    angleToWinningSpot += 2 * Math.PI;
+                }
+            } else {
+                if (angleToWinningSpot > 0) {
+                    angleToWinningSpot -= 2 * Math.PI;
+                }
+            }
+        }
 
         const totalRotation =
             angleToWinningSpot + 2 * Math.PI * fullSpins;
@@ -152,6 +165,7 @@ export const useCircularMovement = <
                 fullSpins,
                 spinDuration,
                 initialTime,
+                direction,
             } = circularMovement.randomize(items.length);
 
             const winner = items[winningIndex] || null;
@@ -167,6 +181,7 @@ export const useCircularMovement = <
                     winningPosition,
                     center,
                     fullSpins,
+                    direction,
                 );
 
             const forwardTime = (time: number) => {

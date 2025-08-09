@@ -19,6 +19,7 @@ abstract class AnimatedCircularMovement
         fullSpins: number;
         spinDuration: number;
         initialTime: number;
+        direction?: 'clockwise' | 'counterclockwise';
     };
 
     forwardTime(callback: (time: number) => void): void {
@@ -32,6 +33,7 @@ export class RandomizedCircularMovement extends AnimatedCircularMovement {
         fullSpins: number;
         spinDuration: number;
         initialTime: number;
+        direction?: 'clockwise' | 'counterclockwise';
     } {
         const winningIndex = Math.floor(
             Math.random() * count,
@@ -79,6 +81,7 @@ export class NearestCircularMovement extends AnimatedCircularMovement {
         fullSpins: number;
         spinDuration: number;
         initialTime: number;
+        direction?: 'clockwise' | 'counterclockwise';
     } {
         if (!this.winner) {
             throw new Error('No winner provided');
@@ -102,6 +105,7 @@ export class NearestCircularMovement extends AnimatedCircularMovement {
             fullSpins,
             spinDuration,
             initialTime: performance.now(),
+            direction: this.direction,
         };
     }
 

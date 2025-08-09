@@ -134,6 +134,7 @@ export interface CircularMovementInterface {
         fullSpins: number;
         spinDuration: number;
         initialTime: number;
+        direction?: 'clockwise' | 'counterclockwise';
     };
     forwardTime(callback: (time: number) => void): void;
 }
